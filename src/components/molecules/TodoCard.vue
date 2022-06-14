@@ -1,6 +1,5 @@
 <script setup>
 import { RadioGroup, RadioGroupLabel, RadioGroupDescription, RadioGroupOption } from '@headlessui/vue'
-
 import { ref } from 'vue'
 
 const emit = defineEmits(['done'])
@@ -9,66 +8,43 @@ const props = defineProps({
     type: Object,
     default: {},
   },
+  disableSelect: {
+    type: Boolean,
+    default: false
+  }
 })
 
-const plans = [
-  {
-    name: 'Startup',
-    ram: '12GB',
-    cpus: '6 CPUs',
-    disk: '160 GB SSD disk',
-  },
-  {
-    name: 'Business',
-    ram: '16GB',
-    cpus: '8 CPUs',
-    disk: '512 GB SSD disk',
-  },
-  {
-    name: 'Enterprise',
-    ram: '32GB',
-    cpus: '12 CPUs',
-    disk: '1024 GB SSD disk',
-  },
-]
-
-const selected = ref(plans[0])
+const selected = ref(props.items[0])
 </script>
 
 <template>
-  <div class="w-full px-4 py-16">
-    <div class="mx-auto w-full max-w-md">
+  <div class="w-full py-6">
+    <div class="ml-10 w-full max-w-xl">
       <RadioGroup v-model="selected">
-        <RadioGroupLabel class="sr-only">Server size</RadioGroupLabel>
         <div class="space-y-2">
           <RadioGroupOption
             as="template"
-            v-for="plan in plans"
-            :key="plan.name"
-            :value="plan"
+            v-for="item in items"
+            :key="item.text"
+            :value="item"
             v-slot="{ active, checked }"
           >
             <div
               :class="[
                 active ? 'ring-2 ring-white ring-opacity-60 ring-offset-2 ring-offset-sky-300' : '',
-                checked ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
+                checked && !disableSelect ? 'bg-sky-900 bg-opacity-75 text-white ' : 'bg-white ',
               ]"
               class="relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none"
             >
               <div class="flex w-full items-center justify-between">
                 <div class="flex items-center">
                   <div class="text-sm">
-                    <RadioGroupLabel as="p" :class="checked ? 'text-white' : 'text-gray-900'" class="font-medium">
-                      {{ plan.name }}
+                    <RadioGroupLabel as="p" :class="checked && !disableSelect ? 'text-white' : 'text-gray-900'" class="font-medium">
+                      {{ item.text }}
                     </RadioGroupLabel>
-                    <RadioGroupDescription as="span" :class="checked ? 'text-sky-100' : 'text-gray-500'" class="inline">
-                      <span> {{ plan.ram }}/{{ plan.cpus }}</span>
-                      <span aria-hidden="true"> &middot; </span>
-                      <span>{{ plan.disk }}</span>
-                    </RadioGroupDescription>
                   </div>
                 </div>
-                <div v-show="checked" class="shrink-0 text-white">
+                <div v-show="checked" class="shrink-0 text-white" @click="emit('done', item.id)">
                   <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="12" fill="#fff" fill-opacity="0.2" />
                     <path

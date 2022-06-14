@@ -31,8 +31,13 @@ export const useTodosStore = defineStore('todos', {
     },
     finishTodo(id) {
       this.todos.filter((e) => {
-        if (e == id) e.isFinished = true
+        if (e.id == id) e.isFinished = true
       })
     },
+    clearHistory() {
+      this.todos.forEach((ele, index) => {
+        if (ele.isFinished === true) delete this.todos[index]
+      })
+    }
   },
 })
