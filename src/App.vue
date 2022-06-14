@@ -1,8 +1,0 @@
-<script setup>
-import Default from './components/templates/Default.vue'
-</script>
-
-<template>
-  <Default />
-</template>
-

@@ -1,8 +1,9 @@
+import axios from 'axios'
 import { defineStore } from 'pinia'
 
 export const useTodosStore = defineStore('todos', {
   state: () => ({
-    /** @type {{ text: string, id: number, isFinished: boolean }[]} */
+    /** @type {{ task: string, id: number, isFinished: boolean }[]} */
     todos: [],
     /** @type {'all' | 'finished' | 'unfinished'} */
     filter: 'all',
@@ -26,8 +27,30 @@ export const useTodosStore = defineStore('todos', {
     },
   },
   actions: {
-    addTodo(text) {
-      this.todos.push({ text, id: this.nextId++, isFinished: false })
+    async getTodos() {
+      try {
+        const response = await axios.get('/api/todos')
+        if (response.status === 200) {
+          this.todos = response.data
+          console.log(this.todos)
+        }
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    },
+    async addTodo(task) {
+      try {
+        const response = await axios.put('/api/todos', { task, isFinished: false })
+        this.todos.push({ task, id: this.nextId++, isFinished: false })
+        if (response === 200) {
+          this.getTodos()
+          return true
+        }
+      } catch (error) {
+        console.log('error: ', error)
+        return false
+      }
+
     },
     finishTodo(id) {
       this.todos.filter((e) => {

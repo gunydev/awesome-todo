@@ -25,7 +25,7 @@ const selected = ref(props.items[0])
           <RadioGroupOption
             as="template"
             v-for="item in items"
-            :key="item.text"
+            :key="item.task"
             :value="item"
             v-slot="{ active, checked }"
           >
@@ -40,7 +40,7 @@ const selected = ref(props.items[0])
                 <div class="flex items-center">
                   <div class="text-sm">
                     <RadioGroupLabel as="p" :class="checked && !disableSelect ? 'text-white' : 'text-gray-900'" class="font-medium">
-                      {{ item.text }}
+                      {{ item.task }}
                     </RadioGroupLabel>
                   </div>
                 </div>

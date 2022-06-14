@@ -10,7 +10,11 @@ let error = ref(false)
 const todoInput = ref('')
 
 const createTodo = () => {
-  todoInput.value != '' && todoInput.value.length > 0 ? todos.addTodo(todoInput.value) : (error.value = true)
+  if (todoInput.value != '' && todoInput.value.length > 0) {
+    todos.addTodo(todoInput.value)
+    todoInput.value = ''
+  } else 
+    error.value = true
 }
 
 const clearText = () => {
