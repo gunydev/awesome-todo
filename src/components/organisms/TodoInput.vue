@@ -28,7 +28,6 @@ const clearText = () => {
   </div>
   <div class="my-4 grid grid-cols-4 gap-4">
     <div class="col-span-3">
-      <!-- input -->
       <Input :error="error" v-model:todoInput="todoInput" @blur="error = false" />
     </div>
     <div class="flex">
