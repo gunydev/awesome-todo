@@ -61,6 +61,8 @@ export const useTodosStore = defineStore('todos', {
       this.todos.forEach((ele, index) => {
         if (ele.isFinished === true) delete this.todos[index]
       })
-    }
+    },
+    // delete todos
+    // update todo status
   },
 })
